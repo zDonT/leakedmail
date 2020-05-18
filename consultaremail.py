@@ -1,100 +1,83 @@
 import sys
 from itertools import islice
-email = ['abc@gmail.com', 'bjbeedd@yahoo.com', 'fadecjf@yahoo.com', 'efeekcb@gmail.com', 'bkdckbk@hotmail.com', 'eebkcke@yahoo.com', 'heabibh@fiap.com.br', 'ejafajc@fiap.com.br', 'ilifedd@hotmail.com', 'kgkcelg@yahoo.com', 'dccabkc@gmail.com', 'ljhaijh@yahoo.com', 'dkcbjdl@gmail.com', 'agklidd@yahoo.com', 'cjaaaab@hotmail.com', 'igdllcc@fiap.com.br', 'iakhlld@gmail.com', 'ebkfheg@fiap.com.br', 'fhldfge@yahoo.com', 'bgcihah@yahoo.com', 'ibijifk@fiap.com.br', 'leedghi@fiap.com.br', 'iacihaa@gmail.com', 'cfladcg@yahoo.com', 'eldichf@gmail.com', 'kckhbld@hotmail.com', 'iefgfec@yahoo.com', 'didcefi@hotmail.com', 'dcdjgkl@yahoo.com', 'befklgf@yahoo.com']
+vazamentos = {
+    "abc@gmail.com": "123456"
+    , "abcd@gmail.com": "1234567"
+    , "abcde@gmail.com": "12345678"
+    }
 def print_menu():
-    print("     \‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾/ ")
-    print("     /  CONSULTA DE E-MAILS VAZADOS.  \ ")
-    print("     \________________________________/ ")
+    print("      ______________________________ ")
+    print("     |                              | ")
+    print("     | CONSULTA DE E-MAILS VAZADOS. | ")
+    print("     |______________________________| ")
     print("")
-    print("       \/ \/ Escolha uma opção \/ \/       ")
-    print(" __________________________________________")
-    print("| 1)                Sair                   |")
-    print("| 2)      Consultar email especifico.      |" )     
-    print("| 3) Verificar todos os e-mails vazados.   |")
-    print(" ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾")
+    print("            Escolha uma opção             ")
+    print(" ________________________________________")
+    print("|                                        |")
+    print("| 1) Sair                                |")
+    print("| 2) Consultar email especifico.         |")     
+    print("| 3) Verificar todos os e-mails vazados. |")
+    print("|________________________________________|")
 home = True
-
 def bonito():
     print("===========================================")
 
 def bonitodois():
     print("-------------------------------------------")
 
+
 def checar():
-    perguntadois = ""
     pergunta = ""
     buscarEmail = input("Digite um Email: ")
-    if buscarEmail in email:
-        print("Seu email foi vazado")
+    if buscarEmail in vazamentos:
+        senha = vazamentos[buscarEmail]
+        email = buscarEmail
+        print("Seus dados foram comprometidos")
+        print("Seu email e senha são:", email, ":" ,senha)
         bonitodois()
-        pergunta = input("Deseja digitar outro email ?'S' Para confirmar.").upper()
-        if pergunta !="S":
-            negacao()
+        remover = input("Deseja remover o vazamento?: ").upper()
+        if remover == "S":
+            remocao = vazamentos.pop(email, senha)
+            if remocao != None:
+                bonito()
+                print("Removido com sucesso")
+                bonito()
+                pergunta = input("Deseja digitar outro email ?'S' Para confirmar. ").upper()
         else:
-            pass
-    elif buscarEmail not in email:
-        bonito()
-        print("Seu email nao foi vazado")
-        bonito()
-        pergunta = input("Deseja digitar outro email ?'S' Para confirmar.").upper()
-        bonito()
+            print("A informação não pode ser removida")
+            pergunta = input("Deseja digitar outro email ?'S' Para confirmar. ").upper()
+        if pergunta == "S":
+            checar()
+        else:
+            negacao()
+    else:
+        print("Não encontramos dados em nossa base.")
+        bonitodois()
+        pergunta = input("Deseja digitar outro email ?'S' Para confirmar. ").upper()
         if pergunta == "S":
             checar()
         else:
             negacao()
 
-def iteradortres():
+def iterador():
     print("=======================================")
-    print("      Listando 30 emails de", len(email))
-    print("=======================================")
-    print("")
-    iterator = islice(email, 30)
-    for mail in iterator:
-        print(mail)
-        bonitodois()
-
-def iteradordois():
-    print("=======================================")
-    print("      Listando 20 emails de", len(email))
+    print("      Listando",len(vazamentos),"Vazamentos.")
     print("=======================================")
     print("")
-    iterator = islice(email, 20)
-    for mail in iterator:
-        print(mail)
-        bonitodois()
-
-def iteradorum():
-    print("=======================================")
-    print("      Listando 10 emails de", len(email))
-    print("=======================================")
-    print("")
-    iterator = islice(email, 10)
-    for mail in iterator:
-        print(mail)
+    iterator = islice(vazamentos, 10)
+    for mail, senha in vazamentos.items():
+        print(mail,":", senha)
         bonitodois()
         
 def todos():    
-    confirmazero = ""
-    confirmaum = ""
-    confirmadois = ""
-    if confirmazero != "N":
-        iteradorum()
-        confirmaum = input("Deseja visualizar mais 10 e-mails?'S' Para confirmar.").upper()
-    if confirmaum == "S":
-        iteradordois()
-        confirmadois = input("Deseja visualizar mais 10 e-mails?'S' Para confirmar. ").upper()
-    else:
-        respinvalidazero()
-        negacao()
-    if confirmadois == "S":
-        iteradortres()
+    confirma = ""
+    if confirma != "N":
+        iterador()
         bonito()
         print("               Fim da Lista")
         bonito()
-        negacao()
 
 def volta_menu():
-    print("\n"*30)
     print(" __________________________________________")
     print("| 1)                Sair                   |")
     print("| 2)      Consultar email especifico.      |" )     
@@ -149,5 +132,7 @@ while home:
     elif escolha == "3":
         print("\n"*2)
         todos()
+        negacao()
+
     else:
         respinvalidaum()
